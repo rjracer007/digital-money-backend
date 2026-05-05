@@ -17,8 +17,8 @@ spring:
             - Path=/auth/**
 
         # Ruta para el servicio de Usuarios (Registro y Perfil)
-        - id: users-service
-          uri: lb://users-service
+        - id: user-service
+          uri: lb://user-service
           predicates:
             - Path=/users/**
 
