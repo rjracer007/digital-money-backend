@@ -1,11 +1,13 @@
 package com.example.user_service.service;
 
+import com.example.user_service.client.AccountFeignClient;
 import com.example.user_service.dto.UserRegisterDTO;
 import com.example.user_service.model.User;
 import com.example.user_service.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -13,7 +15,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AccountFeignClient accountFeignClient;
 
+    @Transactional
     public User registerUser(UserRegisterDTO dto) {
         if (userRepository.findByEmail(dto.email()).isPresent()) {
             throw new IllegalArgumentException("El email ya está registrado");
@@ -27,7 +31,11 @@ public class UserService {
                 .phone(dto.phone())
                 .build();
 
-        return userRepository.save(newUser);
+        User savedUser = userRepository.save(newUser);
+
+        accountFeignClient.createAccount(savedUser.getId());
+
+        return savedUser;
     }
 
     public User findByEmail(String email) {

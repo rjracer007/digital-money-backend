@@ -4,7 +4,7 @@ import com.example.auth_service.client.UserFeignClient;
 import com.example.auth_service.dto.AuthRequestDTO;
 import com.example.auth_service.dto.AuthResponseDTO;
 import com.example.auth_service.dto.UserCredentialsDTO;
-import com.example.auth_service.security.JwtProvider;
+import com.example.auth_service.config.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
